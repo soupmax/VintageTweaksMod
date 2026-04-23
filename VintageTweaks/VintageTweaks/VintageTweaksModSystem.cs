@@ -13,7 +13,7 @@ namespace VintageTweaks
 
         private Harmony harmony;
 
-        public ServerConfig config { get; private set; }
+        public static ServerConfig Config { get; private set; }
 
         public override void Start(ICoreAPI api)
         {
@@ -30,14 +30,14 @@ namespace VintageTweaks
 
             try
             {
-                config = api.LoadModConfig<ServerConfig>($"{Mod.Info.ModID}-server.json") ?? new ServerConfig();
-                api.StoreModConfig(config, $"{Mod.Info.ModID}-server.json");
+                Config = api.LoadModConfig<ServerConfig>($"{Mod.Info.ModID}-server.json") ?? new ServerConfig();
+                api.StoreModConfig(Config, $"{Mod.Info.ModID}-server.json");
             }
             catch (Exception e)
             {
                 Mod.Logger.Error("Error while loading server config. Using default values.");
                 Mod.Logger.Error(e);
-                config = new ServerConfig();
+                Config = new ServerConfig();
             }
 
             api.ChatCommands.Create("sethealthslow")
@@ -61,9 +61,9 @@ namespace VintageTweaks
                     if (value < 0f || value > 5f)
                         return TextCommandResult.Error("The value must be between 0 and 5");
 
-                    config.healthslow = value;
+                    Config.healthslow = value;
 
-                    api.StoreModConfig(config, "vintagetweaks-server.json");
+                    api.StoreModConfig(Config, "vintagetweaks-server.json");
 
                     return TextCommandResult.Success($"Set value to {value}. Restart Server for this change to take effect.");
                 }
@@ -75,7 +75,7 @@ namespace VintageTweaks
                 .RequiresPrivilege(Privilege.chat)
                 .HandleWith(args =>
                 {
-                    return TextCommandResult.Success(config.healthslow.ToString());
+                    return TextCommandResult.Success(Config.healthslow.ToString());
                 }
             );
         }

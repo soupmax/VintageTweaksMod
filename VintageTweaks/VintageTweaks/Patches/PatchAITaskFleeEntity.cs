@@ -64,7 +64,7 @@ namespace VintageTweaks.Patches
         {
             return task.world.Api.ModLoader
                 .GetModSystem<VintageTweaksModSystem>()
-                .config.healthslow;
+                .Config.healthslow;
         }
 
         //set private movespeed field
